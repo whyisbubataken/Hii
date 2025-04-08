@@ -1,0 +1,30 @@
+import discord
+from discord.ext import commands
+
+# Create a bot instance with command prefix
+intents = discord.Intents.default()
+intents.message_content = True
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+# Command to create multiple channels
+@bot.command()
+async def create_channels(ctx, number_of_channels: int):
+    """Creates multiple text channels in the server."""
+    guild = ctx.guild
+    
+    if number_of_channels <= 0:
+        await ctx.send("Please provide a valid number of channels to create!")
+        return
+    
+    for i in range(number_of_channels):
+        channel_name = f"test-channel-{i+1}"
+        await guild.create_text_channel(channel_name)
+        await ctx.send(f"Channel '{channel_name}' created!")
+
+# Event that runs when the bot is ready
+@bot.event
+async def on_ready():
+    print(f'Bot logged in as {bot.user}')
+
+# Run the bot with your token
+bot.run('MTM1OTI1MDQzMzYwNzk5MTI5Nw.GMVYH8.AML7pAB5-FYy-aGtpd461_Pzun-ynNLm6_LYIw')
